@@ -1,1 +1,1 @@
-# diseno-digital-avanzado-course
+# Advanced Digital Design Course 2026
