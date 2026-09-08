@@ -26,3 +26,9 @@ repos:
           - --inplace
         language: system
         files: \.(v|sv)$
+
+      - id: verible-verilog-syntax
+        name: Verible Verilog Syntax Check
+        entry: verible-verilog-syntax
+        language: system
+        files: \.(v|sv)$
