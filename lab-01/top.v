@@ -37,7 +37,7 @@ module top #(
 
     /* Assign outputs. i_sw[3] bit selects the blue or green LEDs */
     assign o_led   = connect_leds;
-    assign o_led_b = (i_sw[3]) ? connect_leds : 4'b0000;
-    assign o_led_g = (i_sw[3]) ? 4'b0000 : connect_leds;
+    assign o_led_b = (i_sw[3]) ? connect_leds : {NB_LEDS{1'b0}};
+    assign o_led_g = (i_sw[3]) ? {NB_LEDS{1'b0}} : connect_leds;
 
 endmodule

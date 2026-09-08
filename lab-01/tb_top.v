@@ -2,7 +2,7 @@ module tb_top ();
 
     parameter NB_LEDS = 4;
     parameter NB_SW = 4;
-    parameter NB_COUNTER = 32;
+    parameter NB_COUNTER = 12;
 
     wire [NB_LEDS-1:0] o_led;
     wire [NB_LEDS-1:0] o_led_b;
