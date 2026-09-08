@@ -10,6 +10,7 @@ module shiftreg #(
 
     reg [NB_LEDS-1:0] shiftReg;
 
+    /* Move bits left every clock pulse */
     always @(posedge clock) begin
         if (i_reset) begin
             shiftReg <= {{NB_LEDS - 1{1'b0}}, 1'b1};

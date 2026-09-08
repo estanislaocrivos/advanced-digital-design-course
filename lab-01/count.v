@@ -14,19 +14,18 @@ module count #(
     localparam R2 = (2 ** (NB_COUNTER - 8)) - 1;
     localparam R3 = (2 ** (NB_COUNTER - 7)) - 1;
 
-    /* Variables */
     wire [NB_COUNTER-1:0] limit_sh;
+
     reg  [NB_COUNTER-1:0] counter;
     reg                   valid;
 
-    /* MUX */
+    /* MUX allows the selection of each counter register as the limit */
     assign limit_sh = (i_sw[2:1] == 2'b00) ?
         R0 : (i_sw[2:1] == 2'b01) ? R1 : (i_sw[2:1] == 2'b10) ? R2 : R3;
 
-    /* Behaviour */
+    /* Increment counter up to limit and reset */
     always @(posedge clock) begin
         if (i_reset) begin
-            /* init. as zero based on register address (parametrized) */
             counter <= {NB_COUNTER{1'b0}};
             valid   <= 1'b0;
         end else if (i_sw[0]) begin
@@ -38,13 +37,11 @@ module count #(
                 valid   <= 1'b0;
             end
         end else begin
-            /* In any other situation, keep registers with its current values */
             counter <= counter;
             valid   <= valid;
         end
     end
 
-    /* Outputs */
     assign o_valid = valid;
 
 endmodule

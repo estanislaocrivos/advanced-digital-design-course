@@ -3,21 +3,16 @@ module top #(
     parameter NB_SW      = 4,
     parameter NB_COUNTER = 32
 ) (
-    o_sum,
-    o_c,
-    i_a,
-    i_b,
-    i_c
+    output [NB_LEDS-1:0] o_led,
+    output [NB_LEDS-1:0] o_led_b,
+    output [NB_LEDS-1:0] o_led_g,
+
+    input [NB_SW-1:0] i_sw,
+    input i_reset,
+    input clock
 );
 
-    output [3:0] o_led;
-    output [3:0] o_led_b;
-    output [3:0] o_led_g;
-
-    input [3:0] i_sw;
-    input i_reset;
-    input clock;
-
+    /* Local registers or wires */
     wire               connect_valid;
     wire [NB_LEDS-1:0] connect_leds;
 
@@ -25,7 +20,7 @@ module top #(
         .NB_SW     (NB_SW - 1),
         .NB_COUNTER(NB_COUNTER)
     ) u_count (
-        .o_valid(),
+        .o_valid(connect_valid),
         .i_sw   (i_sw[NB_SW-1:0]),
         .i_reset(i_reset),
         .clock  (clock)
@@ -34,12 +29,13 @@ module top #(
     shiftreg #(
         .NB_LEDS(NB_LEDS)
     ) u_shiftreg (
-        .o_led  (),
-        .i_valid(),
+        .o_led  (connect_leds),
+        .i_valid(connect_valid),
         .i_reset(i_reset),
         .clock  (clock)
     );
 
+    /* Assign outputs. i_sw[3] bit selects the blue or green LEDs */
     assign o_led   = connect_leds;
     assign o_led_b = (i_sw[3]) ? connect_leds : 4'b0000;
     assign o_led_g = (i_sw[3]) ? 4'b0000 : connect_leds;

@@ -4,11 +4,11 @@ module tb_top ();
     parameter NB_SW = 4;
     parameter NB_COUNTER = 32;
 
-    output [3:0] o_led;
-    output [3:0] o_led_b;
-    output [3:0] o_led_g;
+    output [NB_LEDS-1:0] o_led;
+    output [NB_LEDS-1:0] o_led_b;
+    output [NB_LEDS-1:0] o_led_g;
 
-    input [3:0] i_sw;
+    input [NB_SW-1:0] i_sw;
     input i_reset;
     input clock;
 
