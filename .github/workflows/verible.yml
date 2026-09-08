@@ -1,0 +1,43 @@
+name: Verible
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verible:
+    runs-on: ubuntu-latest
+    env:
+      VERIBLE_VERSION: v0.0-4163-g6cce8f19
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Verible
+        id: cache-verible
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/verible
+          key: verible-${{ env.VERIBLE_VERSION }}
+
+      - name: Install Verible
+        if: steps.cache-verible.outputs.cache-hit != 'true'
+        run: |
+          curl -sL "https://github.com/chipsalliance/verible/releases/download/${VERIBLE_VERSION}/verible-${VERIBLE_VERSION}-linux-static-x86_64.tar.gz" -o verible.tar.gz
+          mkdir -p ~/.local/verible
+          tar -xzf verible.tar.gz --strip-components=1 -C ~/.local/verible
+
+      - name: Add Verible to PATH
+        run: echo "$HOME/.local/verible/bin" >> "$GITHUB_PATH"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      # Runs the same hooks defined in .pre-commit-config.yaml
+      # (verible-verilog-format + verible-verilog-syntax) against every file.
+      - name: Run pre-commit hooks
+        run: pre-commit run --all-files --show-diff-on-failure
