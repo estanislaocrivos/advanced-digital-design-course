@@ -8,8 +8,8 @@ module top #(
     output [NB_LEDS-1:0] o_led_g,
 
     input [NB_SW-1:0] i_sw,
-    input i_reset,
-    input clock
+    input             i_reset,
+    input             clock
 );
 
     /* Local registers or wires */
@@ -22,7 +22,7 @@ module top #(
     ) u_count (
         .o_valid(connect_valid),
         .i_sw   (i_sw[NB_SW-1:0]),
-        .i_reset(i_reset),
+        .i_reset(~i_reset),
         .clock  (clock)
     );
 
@@ -31,7 +31,7 @@ module top #(
     ) u_shiftreg (
         .o_led  (connect_leds),
         .i_valid(connect_valid),
-        .i_reset(i_reset),
+        .i_reset(~i_reset),
         .clock  (clock)
     );
 

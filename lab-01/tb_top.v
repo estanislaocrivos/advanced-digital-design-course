@@ -4,14 +4,6 @@ module tb_top ();
     parameter NB_SW = 4;
     parameter NB_COUNTER = 32;
 
-    output [NB_LEDS-1:0] o_led;
-    output [NB_LEDS-1:0] o_led_b;
-    output [NB_LEDS-1:0] o_led_g;
-
-    input [NB_SW-1:0] i_sw;
-    input i_reset;
-    input clock;
-
     wire [NB_LEDS-1:0] o_led;
     wire [NB_LEDS-1:0] o_led_b;
     wire [NB_LEDS-1:0] o_led_g;
@@ -39,15 +31,7 @@ module tb_top ();
 
         #10000;
         @(posedge clock);
-        i_sw = 4'b0100;
-
-        #10000;
-        @(posedge clock);
         i_sw = 4'b0101;
-
-        #10000;
-        @(posedge clock);
-        i_sw = 4'b0110;
 
         #10000;
         @(posedge clock);
@@ -55,15 +39,7 @@ module tb_top ();
 
         #10000;
         @(posedge clock);
-        i_sw = 4'b1000;
-
-        #10000;
-        @(posedge clock);
         i_sw = 4'b1001;
-
-        #10000;
-        @(posedge clock);
-        i_sw = 4'b1010;
 
         #10000;
         @(posedge clock);
@@ -71,19 +47,12 @@ module tb_top ();
 
         #10000;
         @(posedge clock);
-        i_sw = 4'b1100;
-
-        #10000;
-        @(posedge clock);
         i_sw = 4'b1101;
 
         #10000;
         @(posedge clock);
-        i_sw = 4'b1110;
-
-        #10000;
-        @(posedge clock);
         i_sw = 4'b1111;
+
     end
 
     always #5 clock = ~clock;
@@ -93,12 +62,12 @@ module tb_top ();
         .NB_SW     (NB_SW),
         .NB_COUNTER(NB_COUNTER)
     ) utop (
-        .o_led  (),
-        .o_led_b(),
-        .o_led_g(),
-        .i_sw   (),
-        .i_reset(),
-        .clock  ()
+        .o_led  (o_led),
+        .o_led_b(o_led_b),
+        .o_led_g(o_led_g),
+        .i_sw   (i_sw),
+        .i_reset(i_reset),
+        .clock  (clock)
     );
 
 endmodule
