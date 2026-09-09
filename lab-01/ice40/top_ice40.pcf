@@ -1,0 +1,15 @@
+# Lattice iCE40HX4K TQ144 - lab-01 LED chaser
+# Clock
+set_io clk        94
+
+# LEDs
+set_io led_green  1
+set_io led_red    2
+set_io led_yellow 3
+set_io led_blue   4
+
+# Buttons
+set_io btn1       31
+set_io btn2       32
+set_io btn3       33
+set_io btn4       34

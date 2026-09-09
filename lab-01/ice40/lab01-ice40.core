@@ -1,0 +1,36 @@
+CAPI=2:
+name: local:adc-course:lab01-ice40:1.0.0
+description: lab-01 LED chaser ported to the Lattice iCE40HX4K (TQ144)
+
+filesets:
+  rtl:
+    files:
+      - ../top.v
+      - ../count.v
+      - ../shiftreg.v
+      - top_ice40.v
+    file_type: verilogSource
+
+  constraints:
+    files:
+      - top_ice40.pcf
+    file_type: PCF
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    toplevel: top_ice40
+
+  synth:
+    <<: *default
+    description: Synthesize and build bitstream for iCE40HX4K
+    default_tool: icestorm
+    filesets_append:
+      - constraints
+    tools:
+      icestorm:
+        nextpnr_options:
+          - --hx4k
+          - --package tq144
+        pnr: next
