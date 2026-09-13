@@ -1,13 +1,15 @@
 module tb_feedback_adder ();
 
-    reg        clock;
-    reg        i_reset_n;
-    reg  [2:0] i_data1;
-    reg  [2:0] i_data2;
-    reg  [1:0] i_sel;
+    reg           clock;
+    reg           i_reset_n;
+    reg     [2:0] i_data1;
+    reg     [2:0] i_data2;
+    reg     [1:0] i_sel;
 
-    wire       o_overflow;
-    wire [5:0] o_data;
+    integer       cycle_count;
+
+    wire          o_overflow;
+    wire    [5:0] o_data;
 
     feedback_adder u_feedback_adder (
         .clock     (clock),
@@ -28,9 +30,12 @@ module tb_feedback_adder ();
         i_data2   = 3'd0;
         i_sel     = 2'b00;
 
-        /* Reset sostenido un par de ciclos, despues liberado */
+        /* Reset sostenido un par de ciclos, despues liberado.
+           Se libera lejos de un flanco de clock (no justo en el
+           @(posedge clock)) para evitar una carrera con el always del DUT. */
         #12;
         @(posedge clock);
+        #2;
         i_reset_n = 1'b1;
         #1;
         $display("t=%0t RESET      -> o_data=%0d ovf=%b", $time, o_data,
@@ -77,9 +82,35 @@ module tb_feedback_adder ();
 
         @(posedge clock);
         #1;
-        /* aca ya se guardo el valor que desbordo: 57+14=71 -> 71-64=7 */
+        /* Aca ya se guardo el valor que desbordo: 57+14=71 -> 71-64=7 */
         $display("t=%0t CASO3.4 OVF-> o_data=%0d ovf=%b (esperado 7, 0)",
                  $time, o_data, o_overflow);
+
+        /* Caso 4: cuantos ciclos de clock hasta overflow con
+           i_data1=1, i_data2=1, i_sel=01 (suma=2 por ciclo), arrancando
+           de un reset limpio */
+        i_reset_n = 1'b0;
+        i_data1   = 3'd1;
+        i_data2   = 3'd1;
+        i_sel     = 2'b01;
+        @(posedge clock);
+        #2;
+        i_reset_n = 1'b1;
+        #1;
+
+        cycle_count = 0;
+        while (!o_overflow) begin
+            @(posedge clock);
+            #1;
+            cycle_count = cycle_count + 1;
+        end
+
+        /* cycle_count queda en el ciclo donde SE PRENDE la bandera
+           (adelantada una suma, ver comentario del Caso 3.3) */
+        $display("t=%0t CASO4 ovf en %0d ciclos -> o_data=%0d ovf=%b", $time,
+                 cycle_count, o_data, o_overflow);
+
+        /* Resultado: a los 32 ciclos de clock, la bandera de overflow se pone en alto, con las condiciones de este caso de prueba */
 
         #10;
         $finish;
