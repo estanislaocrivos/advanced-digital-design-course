@@ -14,7 +14,7 @@ Course record for the Advanced Digital Design course from the University of Cord
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install pre-commit
+.venv/bin/pip install -r requirements.txt
 .venv/bin/pre-commit install
 ```
 
