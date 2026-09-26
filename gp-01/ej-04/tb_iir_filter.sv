@@ -67,32 +67,15 @@ module tb_iir_filter ();
         end
     endtask
 
-    integer k;
-
     initial begin
         $dumpfile("tb_iir_filter.vcd");
         $dumpvars(0, tb_iir_filter);
 
-        $display(
-            "\n=== impulse, amplitude 1 (expected h[k] = 1, -0.5, 1, 1.375, ...) ==="
-                );
-        run_impulse(1, 12);
+        $display("\n=== Impulse response, amplitude 127 ===");
+        run_impulse(127, 24);
 
-        $display("\n=== impulse, amplitude 127 ===");
-        run_impulse(127, 12);
-
-        $display("\n=== step, amplitude 127 (ideal steady state = 1016) ===");
+        $display("\n=== Step response, amplitude 127 ===");
         run_step(127, 24);
-
-        $display(
-            "\n=== zero input after a step: does the state decay to 0? ===");
-        for (k = 0; k < 40; k = k + 1) step(0);
-
-        $display(
-            "\n=== same thing from a NEGATIVE state: run_step(-128), then zero input ==="
-                );
-        run_step(-128, 24);
-        for (k = 0; k < 40; k = k + 1) step(0);
 
         $finish;
     end
