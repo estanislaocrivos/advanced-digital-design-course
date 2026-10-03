@@ -25,9 +25,7 @@ If the formatter modifies any file, the commit is aborted — re-stage and commi
 
 ## Shared Python helpers
 
-`shared/dsptools/` holds the fixed-point and DSP helpers used across labs, so
-that notebooks do not import from `lab-*/assets/`, which is gitignored course
-material and absent from a fresh clone.
+`shared/dsptools/` holds the fixed-point and DSP helpers used across labs.
 
 The editable install above makes it importable from any working directory:
 
