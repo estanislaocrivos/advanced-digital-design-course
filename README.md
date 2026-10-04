@@ -1,4 +1,4 @@
-# Advanced Digital Design Course 2026
+# Advanced Digital Design Course 2026 💽
 
 Course record for the Advanced Digital Design course from the University of Cordoba, Argentina.
 
