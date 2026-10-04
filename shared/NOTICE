@@ -1,0 +1,23 @@
+Third-party code bundled in this directory
+==========================================
+
+shared/dsptools/_fixedInt.py
+----------------------------
+Part of the deModel library, a Python package for modelling fixed point
+arithmetic algorithms.
+
+    Copyright (C) 2007 Dillon Engineering, Inc.
+    http://www.dilloneng.com
+
+Licensed under the GNU Lesser General Public License, version 2.1 or (at your
+option) any later version. See https://www.gnu.org/licenses/lgpl-2.1.html
+
+This file is NOT covered by the MIT license in this repository's LICENSE file.
+It is redistributed verbatim, with its original copyright and license header
+intact, as permitted by the LGPL.
+
+shared/dsptools/dsp.py
+----------------------
+DSP helpers distributed as course material (originally DSPtools.py), with one
+compatibility fix: eyediagram() no longer calls plt.hold(), which matplotlib
+removed in version 3.0.
